@@ -1,0 +1,50 @@
+% Generate healthy data
+mu1 = [0 0];
+sigma1 = [1 0; 0 1];
+rng default;
+healthy_data = mvnrnd(mu1,sigma1,1000);
+
+% Generate faulty data
+mu2 = [3 3];
+sigma2 = [1 0; 0 1];
+faulty_data = mvnrnd(mu2,sigma2,1000);
+
+figure;
+hold on;
+
+% Plot healthy data
+x1 = -4:0.1:4;
+y1 = -4:0.1:4;
+[X1,Y1] = meshgrid(x1,y1);
+F1 = mvnpdf([X1(:) Y1(:)],mu1,sigma1);
+F1 = reshape(F1,length(y1),length(x1));
+contour(x1,y1,F1);
+
+% Plot faulty data
+x2 = 0:0.1:6;
+y2 = 0:0.1:6;
+[X2,Y2] = meshgrid(x2,y2);
+F2 = mvnpdf([X2(:) Y2(:)],mu2,sigma2);
+F2 = reshape(F2,length(y2),length(x2));
+contour(x2,y2,F2);
+
+% Label the plots
+xlabel('X');
+ylabel('Y');
+legend('Healthy Data','Faulty Data');
+
+% Plot time series graph
+figure;
+hold on;
+
+% Healthy data
+plot(healthy_data(:,1),'b-');
+
+% Faulty data
+plot(faulty_data(:,1),'r-');
+
+% Label the plots
+xlabel('Sample Number');
+ylabel('Value');
+legend('Healthy Data','Faulty Data');
+
